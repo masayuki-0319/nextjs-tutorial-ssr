@@ -1,4 +1,9 @@
-import { GetStaticProps, GetStaticPropsContext, NextPage } from 'next';
+import {
+  GetStaticPaths,
+  GetStaticProps,
+  GetStaticPropsContext,
+  NextPage,
+} from 'next';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -37,5 +42,16 @@ export const getStaticProps: GetStaticProps = async (
     props: {
       loadedProduct: product,
     },
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [
+      { params: { pid: 'p1' } },
+      { params: { pid: 'p2' } },
+      { params: { pid: 'p3' } },
+    ],
+    fallback: false,
   };
 };
