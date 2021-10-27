@@ -31,9 +31,7 @@ export const getStaticProps: GetStaticProps = async (
 ) => {
   const { params } = context;
 
-  const filePath = path.join(process.cwd(), 'data', 'dummy-backend.json');
-  const jsonData = await fs.readFile(filePath);
-  const data = JSON.parse(jsonData.toString()) as { products: Product[] };
+  const data = await getData();
 
   const productId = params!.pid;
   const product = data.products.find((product) => product.id === productId);
@@ -45,13 +43,25 @@ export const getStaticProps: GetStaticProps = async (
   };
 };
 
+const getData = async () => {
+  const filePath = path.join(process.cwd(), 'data', 'dummy-backend.json');
+  const jsonData = await fs.readFile(filePath);
+  const data = JSON.parse(jsonData.toString()) as { products: Product[] };
+
+  return data;
+};
+
 export const getStaticPaths: GetStaticPaths = async () => {
+  const data = await getData();
+
+  const ids = data.products.map((product) => product.id);
+
+  const params = ids.map((id) => {
+    return { params: { pid: id } };
+  });
+
   return {
-    paths: [
-      { params: { pid: 'p1' } },
-      { params: { pid: 'p2' } },
-      { params: { pid: 'p3' } },
-    ],
+    paths: params,
     fallback: 'blocking',
   };
 };
