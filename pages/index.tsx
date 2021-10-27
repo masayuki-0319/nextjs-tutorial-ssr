@@ -1,9 +1,10 @@
 import type { GetStaticProps, NextPage } from 'next';
+import fs from 'fs/promises';
+import path from 'path';
 
 type Product = {
   id: string;
   title: string;
-  description: string;
 };
 
 type Props = {
@@ -23,22 +24,13 @@ const Home: NextPage<Props> = (props) => {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const products: Product[] = [
-    {
-      id: 'p1',
-      title: 'Product 1',
-      description: 'Description 1',
-    },
-    {
-      id: 'p2',
-      title: 'Product 2',
-      description: 'Description 2',
-    },
-  ];
+  const filePath = path.join(process.cwd(), 'data', 'dummy-backend.json');
+  const jsonData = await fs.readFile(filePath);
+  const data = JSON.parse(jsonData.toString());
 
   return {
     props: {
-      products: products,
+      products: data.products,
     },
   };
 };
