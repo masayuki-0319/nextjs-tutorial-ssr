@@ -52,6 +52,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
       { params: { pid: 'p2' } },
       { params: { pid: 'p3' } },
     ],
-    fallback: false,
+    fallback: 'blocking',
   };
 };
