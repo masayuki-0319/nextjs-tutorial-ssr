@@ -1,11 +1,10 @@
 import type { GetStaticProps, NextPage } from 'next';
+import Link from 'next/link';
+
 import fs from 'fs/promises';
 import path from 'path';
 
-type Product = {
-  id: string;
-  title: string;
-};
+import { Product } from '../types';
 
 type Props = {
   products: Product[];
@@ -17,7 +16,11 @@ const Home: NextPage<Props> = (props) => {
   return (
     <ul>
       {products.map((product) => {
-        return <li key={product.id}>{product.title}</li>;
+        return (
+          <li key={product.id}>
+            <Link href={`/${product.id}`}>{product.title}</Link>
+          </li>
+        );
       })}
     </ul>
   );
