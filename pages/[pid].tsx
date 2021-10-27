@@ -16,6 +16,10 @@ type Props = {
 export const ProductDetailPage: NextPage<Props> = (props) => {
   const { loadedProduct } = props;
 
+  if (!loadedProduct) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
       <h1>{loadedProduct.title}</h1>
@@ -35,6 +39,10 @@ export const getStaticProps: GetStaticProps = async (
 
   const productId = params!.pid;
   const product = data.products.find((product) => product.id === productId);
+
+  if (!product) {
+    return { notFound: true };
+  }
 
   return {
     props: {
@@ -62,6 +70,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths: params,
-    fallback: 'blocking',
+    fallback: true,
   };
 };
