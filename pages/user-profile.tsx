@@ -1,4 +1,4 @@
-import { NextPage } from 'next';
+import { GetServerSidePropsContext, NextPage } from 'next';
 
 type Props = {};
 
@@ -14,7 +14,12 @@ export const UserProfilePage: NextPage<Props> = (props) => {
 
 export default UserProfilePage;
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const { params, req, res } = context;
+
+
   return {
     props: {
       username: 'Max',
