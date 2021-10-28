@@ -1,4 +1,4 @@
-import type { GetStaticProps, NextPage } from 'next';
+import type { InferGetStaticPropsType, NextPage } from 'next';
 import Link from 'next/link';
 
 import fs from 'fs/promises';
@@ -6,9 +6,7 @@ import path from 'path';
 
 import { Product } from '../types';
 
-type Props = {
-  products: Product[];
-};
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const Home: NextPage<Props> = (props) => {
   const { products } = props;
@@ -26,10 +24,12 @@ const Home: NextPage<Props> = (props) => {
   );
 };
 
-export const getStaticProps: GetStaticProps<Props> = async () => {
+export const getStaticProps = async () => {
   const filePath = path.join(process.cwd(), 'data', 'dummy-backend.json');
   const jsonData = await fs.readFile(filePath);
-  const data = JSON.parse(jsonData.toString());
+  const data = JSON.parse(jsonData.toString()) as {
+    products: Product[];
+  };
 
   return {
     props: {

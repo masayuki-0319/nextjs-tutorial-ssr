@@ -1,17 +1,15 @@
 import {
   GetStaticPaths,
-  GetStaticProps,
   GetStaticPropsContext,
   NextPage,
+  InferGetStaticPropsType,
 } from 'next';
 import fs from 'fs/promises';
 import path from 'path';
 
 import { Product } from '../types';
 
-type Props = {
-  loadedProduct: Product;
-};
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 export const ProductDetailPage: NextPage<Props> = (props) => {
   const { loadedProduct } = props;
@@ -30,9 +28,7 @@ export const ProductDetailPage: NextPage<Props> = (props) => {
 
 export default ProductDetailPage;
 
-export const getStaticProps: GetStaticProps = async (
-  context: GetStaticPropsContext
-) => {
+export const getStaticProps = async (context: GetStaticPropsContext) => {
   const { params } = context;
 
   const data = await getData();
@@ -40,14 +36,11 @@ export const getStaticProps: GetStaticProps = async (
   const productId = params!.pid;
   const product = data.products.find((product) => product.id === productId);
 
-  if (!product) {
-    return { notFound: true };
-  }
-
   return {
     props: {
       loadedProduct: product,
     },
+    notFound: product ? false : true,
   };
 };
 
