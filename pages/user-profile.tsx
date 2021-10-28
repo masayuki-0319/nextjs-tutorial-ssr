@@ -14,11 +14,8 @@ export const UserProfilePage: NextPage<Props> = (props) => {
 
 export default UserProfilePage;
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const { params, req, res } = context;
-
 
   return {
     props: {

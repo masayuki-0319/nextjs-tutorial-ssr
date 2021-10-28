@@ -7,7 +7,7 @@ import {
 import fs from 'fs/promises';
 import path from 'path';
 
-import { Product } from '../types';
+import { Product } from '../../types';
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
